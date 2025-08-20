@@ -1,0 +1,49 @@
+class Tile {
+    constructor() {
+        this.firedUpon = false;
+        this.ship = null;
+    }
+}
+
+export default class Gameboard {
+    constructor() {
+        this.matrix = new Array(10).fill(null).map(() => new Array(10).fill(new Tile()));
+    }
+
+    #validPlacement(shipLength, row, column, direction) {
+        switch (direction) {
+            case 'h':
+                if (column + shipLength + 1 > 10) // adding 1 accounts for zero-indexing; could have just compared to 9 instead
+                    return "Out of bounds horizontal placement";
+                for (let i = column; i < column + shipLength; i++) {
+                    if (this.matrix[row][i].ship) return "Collision";
+                }
+                break;
+            case 'v':
+                if (row + shipLength + 1 > 10)
+                    return "Out of bounds vertical placement";
+                for (let i = row; i < row + shipLength; i++) {
+                    if (this.matrix[i][column].ship) return "Collision";
+                }
+                break;
+        }
+        return "Valid";
+    }
+
+    placeShip(ship, row, column, direction) {
+        const valid = this.#validPlacement(ship.length, row, column, direction);
+        if (valid !== 'Valid') throw new Error(valid); // We will of course handle this error in the game controller and/or DOM so it's not ugly
+        switch (direction) {
+            case 'h':
+                for (let i = column; i < column + ship.length; i++) {
+                    this.matrix[row][i].ship = ship;
+                }
+                break;
+            case 'v':
+                for (let i = row; i < row + ship.length; i++) {
+                    this.matrix[i][column].ship = ship;
+                }
+                break;
+        }
+    }
+}
