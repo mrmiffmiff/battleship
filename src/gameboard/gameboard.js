@@ -58,8 +58,8 @@ export default class Gameboard {
 
     get fleetGone() {
         for (let ship of this.fleet) {
-            if (ship.isSunk()) return true;
+            if (!ship.isSunk()) return false;
         }
-        return false;
+        return true;
     }
 }

@@ -103,6 +103,13 @@ describe('Gameboard class tests', () => {
             expect(testBoard.fleetGone).toBeFalsy();
         });
 
+        test('One ship destroyed but fleet should not be gone', () => {
+            for (let i = 4; i < 4 + 5; i++) {
+                testBoard.receiveAttack(i, 3);
+            }
+            expect(testBoard.fleetGone).toBeFalsy();
+        });
+
         test('Fleet destroyed', () => {
             for (let i = 4; i < 4 + 5; i++) {
                 testBoard.receiveAttack(i, 3);
