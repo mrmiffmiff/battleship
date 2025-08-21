@@ -25,11 +25,13 @@ describe('Ship class tests', () => {
 
     test('Ship considered sunk when damage equals length', () => {
         let testShip = new Ship('testShipName', 3);
-        expect(testShip.isSunk()).toBeFalsy;
+        expect(testShip.isSunk()).toBeFalsy();
         testShip.hit();
         testShip.hit();
-        expect(testShip.isSunk()).toBeTruthy;
+        expect(testShip.isSunk()).toBeFalsy();
         testShip.hit();
-        expect(testShip.isSunk()).toBeTruthy;
+        expect(testShip.isSunk()).toBeTruthy();
+        testShip.hit();
+        expect(testShip.isSunk()).toBeTruthy();
     });
 });
