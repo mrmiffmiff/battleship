@@ -55,8 +55,14 @@ export default class Gameboard {
     receiveAttack(row, column) {
         if (row + 1 < 1 || column + 1 < 1 || row + 1 > ROWS || column + 1 > COLUMNS) throw new Error("Out of bounds");
         if (this.matrix[row][column].firedUpon) throw new Error("Duplicate attack");
+        let hit = false, sunk = false;
         this.matrix[row][column].firedUpon = true;
-        if (this.matrix[row][column].ship) this.matrix[row][column].ship.hit();
+        if (this.matrix[row][column].ship) {
+            this.matrix[row][column].ship.hit();
+            hit = true;
+            if (this.matrix[row][column].ship.isSunk()) sunk = true;
+        }
+        return { hit, sunk };
     }
 
     get fleetGone() {

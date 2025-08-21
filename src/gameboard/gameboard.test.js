@@ -12,7 +12,7 @@ describe('Gameboard class tests', () => {
             for (let row of testBoard.matrix) {
                 expect(row).toHaveLength(COLUMNS);
             }
-        })
+        });
 
         test('New gameboard should have existent but empty tiles', () => {
             for (const row of testBoard.matrix) {
@@ -29,12 +29,12 @@ describe('Gameboard class tests', () => {
 
         beforeEach(() => {
             testBoard = new Gameboard();
-        })
+        });
 
         test('Invalid direction', () => {
             let testShip = new Ship('test', 5);
             expect(() => { testBoard.placeShip(testShip, 3, 4, 'wffeqwf') }).toThrow('Invalid direction');
-        })
+        });
 
         test('Invalid horizontal placement', () => {
             let testShip = new Ship('test', 5);
@@ -81,7 +81,7 @@ describe('Gameboard class tests', () => {
             let testShipTwo = new Ship('testTwo', 3);
             testBoard.placeShip(testShipOne, 4, 3, 'v');
             testBoard.placeShip(testShipTwo, 3, 3, 'h');
-        })
+        });
 
         // There's probably no need to test for attacks outside proper coordinates as eventually selection will be handled by the GUI
         // But for now I'm going to include it
@@ -90,13 +90,15 @@ describe('Gameboard class tests', () => {
         });
 
         test('Empty spot', () => {
-            testBoard.receiveAttack(5, 5);
+            let attack = testBoard.receiveAttack(5, 5);
             expect(testBoard.matrix[5][5]).toHaveProperty('firedUpon', true);
+            expect(attack).toHaveProperty('hit', false);
         });
 
         test('Ship hit', () => {
-            testBoard.receiveAttack(4, 3);
+            let attack = testBoard.receiveAttack(4, 3);
             expect(testBoard.matrix[4][3].ship).toHaveProperty('damage', 1);
+            expect(attack).toHaveProperty('hit', true);
         });
 
         test('Cannot fire on same spot more than once', () => {
@@ -104,7 +106,14 @@ describe('Gameboard class tests', () => {
             expect(() => { testBoard.receiveAttack(5, 5) }).toThrow("Duplicate attack");
         });
 
-        // There's no need to test that an individual ship sinks as that's already tested, but we do need to implement fleets
+        // While there's not actually a need to test sinking functionality in itself, since the returned object does indicate it, gotta test that
+        test('Hit marked as sinking hit', () => {
+            testBoard.receiveAttack(3, 3);
+            testBoard.receiveAttack(3, 4);
+            let finalAttack = testBoard.receiveAttack(3, 5);
+            expect(finalAttack).toHaveProperty('sunk', true);
+        });
+
         test('When ships still intact, fleet not destroyed', () => {
             expect(testBoard.fleetGone).toBeFalsy();
         });
