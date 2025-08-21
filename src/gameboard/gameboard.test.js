@@ -25,6 +25,12 @@ describe('Gameboard class tests', () => {
     });
 
     describe('Ship placement', () => {
+        test('Invalid direction', () => {
+            let testBoard = new Gameboard();
+            let testShip = new Ship('test', 5);
+            expect(() => { testBoard.placeShip(testShip, 3, 4, 'wffeqwf') }).toThrow('Invalid direction');
+        })
+
         test('Invalid horizontal placement', () => {
             let testBoard = new Gameboard();
             let testShip = new Ship('test', 5);

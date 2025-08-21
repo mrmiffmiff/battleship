@@ -32,6 +32,7 @@ export default class Gameboard {
     }
 
     placeShip(ship, row, column, direction) {
+        if (direction !== 'h' && direction !== 'v') throw new Error('Invalid direction'); // Shouldn't happen but...
         const valid = this.#validPlacement(ship.length, row, column, direction);
         if (valid !== 'Valid') throw new Error(valid); // We will of course handle this error in the game controller and/or DOM so it's not ugly
         switch (direction) {
