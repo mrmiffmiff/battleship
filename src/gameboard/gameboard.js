@@ -7,7 +7,8 @@ class Tile {
 
 export default class Gameboard {
     constructor() {
-        this.matrix = new Array(10).fill(null).map(() => new Array(10).fill(new Tile()));
+        this.matrix = new Array(10).fill(null).map(() => new Array(10).fill(null).map(() => new Tile()));
+        this.fleet = [];
     }
 
     #validPlacement(shipLength, row, column, direction) {
@@ -45,5 +46,20 @@ export default class Gameboard {
                 }
                 break;
         }
+        this.fleet.push(ship);
+    }
+
+    receiveAttack(row, column) {
+        if (row < 0 || column < 0 || row > 9 || column > 9) throw new Error("Out of bounds");
+        if (this.matrix[row][column].firedUpon) throw new Error("Duplicate attack");
+        this.matrix[row][column].firedUpon = true;
+        if (this.matrix[row][column].ship) this.matrix[row][column].ship.hit();
+    }
+
+    get fleetGone() {
+        for (let ship of this.fleet) {
+            if (ship.isSunk()) return true;
+        }
+        return false;
     }
 }
