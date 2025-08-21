@@ -1,3 +1,5 @@
+const ROWS = 10, COLUMNS = 10;
+export { ROWS, COLUMNS }
 class Tile {
     constructor() {
         this.firedUpon = false;
@@ -7,21 +9,21 @@ class Tile {
 
 export default class Gameboard {
     constructor() {
-        this.matrix = new Array(10).fill(null).map(() => new Array(10).fill(null).map(() => new Tile()));
+        this.matrix = new Array(ROWS).fill(null).map(() => new Array(COLUMNS).fill(null).map(() => new Tile()));
         this.fleet = [];
     }
 
     #validPlacement(shipLength, row, column, direction) {
         switch (direction) {
             case 'h':
-                if (column + shipLength + 1 > 10) // adding 1 accounts for zero-indexing; could have just compared to 9 instead
+                if (column + shipLength + 1 > COLUMNS) // adding 1 accounts for zero-indexing; could have just compared to 9 instead
                     return "Out of bounds horizontal placement";
                 for (let i = column; i < column + shipLength; i++) {
                     if (this.matrix[row][i].ship) return "Collision";
                 }
                 break;
             case 'v':
-                if (row + shipLength + 1 > 10)
+                if (row + shipLength + 1 > ROWS)
                     return "Out of bounds vertical placement";
                 for (let i = row; i < row + shipLength; i++) {
                     if (this.matrix[i][column].ship) return "Collision";
@@ -51,7 +53,7 @@ export default class Gameboard {
     }
 
     receiveAttack(row, column) {
-        if (row < 0 || column < 0 || row > 9 || column > 9) throw new Error("Out of bounds");
+        if (row + 1 < 1 || column + 1 < 1 || row + 1 > ROWS || column + 1 > COLUMNS) throw new Error("Out of bounds");
         if (this.matrix[row][column].firedUpon) throw new Error("Duplicate attack");
         this.matrix[row][column].firedUpon = true;
         if (this.matrix[row][column].ship) this.matrix[row][column].ship.hit();

@@ -1,16 +1,16 @@
-import Gameboard from "./gameboard";
+import Gameboard, { ROWS, COLUMNS } from "./gameboard";
 import Ship from "../ships/ship";
 
 describe('Gameboard class tests', () => {
     describe('Gameboard generation tests', () => {
         let testBoard = new Gameboard();
         test('New gameboard has matrix with 10 rows', () => {
-            expect(testBoard.matrix).toHaveLength(10);
+            expect(testBoard.matrix).toHaveLength(ROWS);
         });
 
         test('Each row of new gameboard matrix should have 10 columns', () => {
             for (let row of testBoard.matrix) {
-                expect(row).toHaveLength(10);
+                expect(row).toHaveLength(COLUMNS);
             }
         })
 
