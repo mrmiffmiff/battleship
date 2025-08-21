@@ -25,20 +25,23 @@ describe('Gameboard class tests', () => {
     });
 
     describe('Ship placement', () => {
+        let testBoard;
+
+        beforeEach(() => {
+            testBoard = new Gameboard();
+        })
+
         test('Invalid direction', () => {
-            let testBoard = new Gameboard();
             let testShip = new Ship('test', 5);
             expect(() => { testBoard.placeShip(testShip, 3, 4, 'wffeqwf') }).toThrow('Invalid direction');
         })
 
         test('Invalid horizontal placement', () => {
-            let testBoard = new Gameboard();
             let testShip = new Ship('test', 5);
             expect(() => { testBoard.placeShip(testShip, 3, 5, 'h') }).toThrow('Out of bounds horizontal placement');
         });
 
         test('Valid horizontal placement', () => {
-            let testBoard = new Gameboard();
             let testShip = new Ship('test', 5);
             expect(() => { testBoard.placeShip(testShip, 3, 4, 'h') }).not.toThrow();
             for (let i = 4; i < 4 + testShip.length; i++) {
@@ -47,13 +50,11 @@ describe('Gameboard class tests', () => {
         });
 
         test('Invalid vertical placement', () => {
-            let testBoard = new Gameboard();
             let testShip = new Ship('test', 5);
             expect(() => { testBoard.placeShip(testShip, 5, 3, 'v') }).toThrow('Out of bounds vertical placement');
         });
 
         test('Valid vertical placement', () => {
-            let testBoard = new Gameboard();
             let testShip = new Ship('test', 5);
             expect(() => { testBoard.placeShip(testShip, 4, 3, 'v') }).not.toThrow();
             for (let i = 4; i < 4 + testShip.length; i++) {
@@ -62,7 +63,6 @@ describe('Gameboard class tests', () => {
         });
 
         test('Collisions', () => {
-            let testBoard = new Gameboard();
             let testShipOne = new Ship('test', 5);
             let testShipTwo = new Ship('testTwo', 3);
             testBoard.placeShip(testShipOne, 4, 3, 'v');
