@@ -103,6 +103,7 @@ describe('Gameboard class tests', () => {
 
         test('Cannot fire on same spot more than once', () => {
             testBoard.receiveAttack(5, 5);
+            expect(testBoard.areCoordinatesFiredUpon(5, 5)).toBeTruthy();
             expect(() => { testBoard.receiveAttack(5, 5) }).toThrow("Duplicate attack");
         });
 
