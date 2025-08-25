@@ -52,7 +52,7 @@ export default class Gameboard {
 
     receiveAttack(row, column) {
         if (row < 0 || column < 0 || row >= ROWS || column >= COLUMNS) throw new Error("Out of bounds");
-        if (this.matrix[row][column].firedUpon) throw new Error("Duplicate attack");
+        if (this.areCoordinatesFiredUpon(row, column)) throw new Error("Duplicate attack");
         let hit = false, sunk = false;
         this.matrix[row][column].firedUpon = true;
         if (this.matrix[row][column].ship) {
@@ -68,5 +68,9 @@ export default class Gameboard {
             if (!ship.isSunk()) return false;
         }
         return true;
+    }
+
+    areCoordinatesFiredUpon(row, column) {
+        return this.matrix[row][column].firedUpon;
     }
 }
