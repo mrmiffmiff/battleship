@@ -13,4 +13,18 @@ export default class GameController {
         this.current = this.playerOne;
         this.turnCount = 0;
     }
+
+    // For the time being, ships are placed in fixed positions; this will change after core functionality is confirmed
+    #placeFixedShips(board) {
+        board.placeShip(new Ship("Carrier", 5), 0, 0, "h");
+        board.placeShip(new Ship("Battleship", 4), 0, 0, "h");
+        board.placeShip(new Ship("Destroyer", 3), 0, 0, "h");
+        board.placeShip(new Ship("Submarine", 3), 0, 0, "h");
+        board.placeShip(new Ship("Patrol Boat", 2), 0, 0, "h");
+    }
+
+    start() {
+        this.#placeFixedShips(this.playerOne.Gameboard);
+        this.#placeFixedShips(this.playerTwo.Gameboard);
+    }
 }
