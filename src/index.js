@@ -8,4 +8,5 @@ document.addEventListener("DOMContentLoaded", () => {
     const game = new GameController();
     const ui = new UIController(game);
     game.ui = ui;
+    ui.init();
 });
