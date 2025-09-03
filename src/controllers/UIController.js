@@ -72,4 +72,9 @@ export default class UIController {
         this.disableClicks();
         this.game.processMove(r, c);
     }
+
+    showGameOver(playerWon) {
+        this.disableClicks();
+        this.status.textContent = (playerWon) ? "You win!" : "Computer wins!";
+    }
 }

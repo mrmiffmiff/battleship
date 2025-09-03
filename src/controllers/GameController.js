@@ -37,6 +37,11 @@ export default class GameController {
         this.turnCount++;
         this.ui.renderBoards(this.playerOne.Gameboard, this.playerTwo.Gameboard);
 
+        if (this.turnCount >= 17 && opponent.Gameboard.fleetGone) { // the turn count check lets us short circuit this a bit
+            this.ui.showGameOver(this.current === this.playerOne);
+            return;
+        }
+
         if (result.hit) {
             if (this.current === this.playerTwo) this.#queueComputerTurn();
             else this.ui.enableClicks();
