@@ -5,6 +5,8 @@ export default class UIController {
         this.game = gameController;
         this.leftGrid = document.querySelector("#board1 .board");
         this.rightGrid = document.querySelector("#board2 .board");
+        this.leftFleet = document.querySelector("#board1 .fleet-status");
+        this.rightFleet = document.querySelector("#board2 .fleet-status");
         this.status = document.querySelector("#status");
         this.handleCellClick = this.#handleCellClick.bind(this); // Sort of silly but necessary
     }
@@ -43,11 +45,24 @@ export default class UIController {
         });
     }
 
+    #renderFleet(board, container) {
+        container.innerHTML = "";
+        board.fleet
+            .filter((ship) => !ship.isSunk())
+            .forEach((ship) => {
+                const shipItem = document.createElement("li");
+                shipItem.textContent = `${ship.name}: ${ship.damage}/${ship.length}`;
+                container.appendChild(shipItem);
+            });
+    }
+
     renderBoards(leftBoard, rightBoard) {
         // For now we're going to assume that the left grid belongs to a human and the right board belongs to a computer
         // But I'm going to need to change this for two player later probably
         this.#drawBoard(this.leftGrid, leftBoard, true);
         this.#drawBoard(this.rightGrid, rightBoard, false);
+        this.#renderFleet(leftBoard, this.leftFleet);
+        this.#renderFleet(rightBoard, this.rightFleet);
     }
 
     // For now still assuming human vs computer, this is going to need to change some later

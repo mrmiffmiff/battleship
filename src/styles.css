@@ -10,6 +10,19 @@ body {
     margin-top: 1rem;
 }
 
+.board-area {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.fleet-status {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    min-width: 8 rem;
+}
+
 .board {
     display: grid;
     grid-template: repeat(10, 2rem) / repeat(10, 2rem);
