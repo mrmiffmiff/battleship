@@ -25,5 +25,27 @@ export default class UIController {
 
     init() {
         this.#buildBoards();
+        this.game.start();
+    }
+
+    /* Grid is the UI element; board is the internal structure; showShips controls whether unhit ships should be visible. */
+    #drawBoard(grid, board, showShips) {
+        grid.querySelectorAll(".gridCell").forEach((cell) => {
+            const r = cell.dataset.row;
+            const c = cell.dataset.col;
+            const tile = board.matrix[r][c];
+
+            cell.className = "gridCell"; // each time we redraw we just want to clear things back to default at first
+
+            if (showShips && tile.ship) cell.classList.add("gridShip");
+            if (tile.firedUpon) cell.classList.add(tile.ship ? "gridHit" : "gridMiss");
+        });
+    }
+
+    renderBoards(leftBoard, rightBoard) {
+        // For now we're going to assume that the left grid belongs to a human and the right board belongs to a computer
+        // But I'm going to need to change this for two player later probably
+        this.#drawBoard(this.leftGrid, leftBoard, true);
+        this.#drawBoard(this.rightGrid, rightBoard, false);
     }
 }

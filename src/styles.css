@@ -21,3 +21,19 @@ body {
     background-color: #e5e7eb;
     cursor: pointer;
 }
+
+.gridShip {
+    background-color: #3b82f6;
+}
+
+.gridHit {
+    background-color: #ef4444;
+}
+
+.gridMiss::after {
+    content: "x";
+    color: #947805;
+    font-size: 1.6rem;
+    line-height: 1.8rem;
+    display: block;
+}
