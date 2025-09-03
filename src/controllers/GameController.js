@@ -28,5 +28,31 @@ export default class GameController {
         this.#placeFixedShips(this.playerOne.Gameboard);
         this.#placeFixedShips(this.playerTwo.Gameboard);
         this.ui.renderBoards(this.playerOne.Gameboard, this.playerTwo.Gameboard);
+        this.ui.enableClicks();
+    }
+
+    processMove(row, col) {
+        const opponent = (this.current === this.playerOne) ? this.playerTwo : this.playerOne;
+        const result = this.current.attack(opponent.Gameboard, row, col);
+        this.turnCount++;
+        this.ui.renderBoards(this.playerOne.Gameboard, this.playerTwo.Gameboard);
+
+        if (result.hit) {
+            if (this.current === this.playerTwo) this.#queueComputerTurn();
+            else this.ui.enableClicks();
+            return;
+        }
+
+        this.current = opponent;
+        if (this.current === this.playerTwo) this.#queueComputerTurn();
+        else this.ui.enableClicks();
+    }
+
+    #queueComputerTurn() {
+        this.ui.disableClicks();
+        setTimeout(() => {
+            const [r, c] = this.playerTwo.getRandomAttack(this.playerOne.Gameboard);
+            this.processMove(r, c);
+        }, 3000);
     }
 }

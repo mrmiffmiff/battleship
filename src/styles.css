@@ -37,3 +37,8 @@ body {
     line-height: 1.8rem;
     display: block;
 }
+
+.disabled .gridCell {
+    cursor: not-allowed;
+    pointer-events: none;
+}

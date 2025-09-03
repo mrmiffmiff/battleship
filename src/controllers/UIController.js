@@ -6,6 +6,7 @@ export default class UIController {
         this.leftGrid = document.querySelector("#board1 .board");
         this.rightGrid = document.querySelector("#board2 .board");
         this.status = document.querySelector("#status");
+        this.handleCellClick = this.#handleCellClick.bind(this); // Sort of silly but necessary
     }
 
     // Build out the basic double board layout
@@ -47,5 +48,28 @@ export default class UIController {
         // But I'm going to need to change this for two player later probably
         this.#drawBoard(this.leftGrid, leftBoard, true);
         this.#drawBoard(this.rightGrid, rightBoard, false);
+    }
+
+    // For now still assuming human vs computer, this is going to need to change some later
+
+    enableClicks() {
+        this.status.textContent = "Your turn";
+        this.rightGrid.addEventListener("click", this.handleCellClick);
+        this.rightGrid.classList.remove("disabled");
+    }
+
+    disableClicks() {
+        this.status.textContent = "Computer thinking...";
+        this.rightGrid.removeEventListener("click", this.handleCellClick);
+        this.rightGrid.classList.add("disabled");
+    }
+
+    #handleCellClick(clickEvent) {
+        const cell = clickEvent.target;
+        if (!cell.classList.contains("gridCell")) return; // gotta be sure what we clicked is actually a cell
+        const r = cell.dataset.row;
+        const c = cell.dataset.col;
+        this.disableClicks();
+        this.game.processMove(r, c);
     }
 }
