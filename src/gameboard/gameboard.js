@@ -16,14 +16,14 @@ export default class Gameboard {
     #validPlacement(shipLength, row, column, direction) {
         switch (direction) {
             case 'h':
-                if (column + shipLength + 1 > COLUMNS) // adding 1 accounts for zero-indexing; could have just compared to 9 instead
+                if (column + shipLength > COLUMNS)
                     throw new Error("Out of bounds horizontal placement");
                 for (let i = column; i < column + shipLength; i++) {
                     if (this.matrix[row][i].ship) throw new Error("Collision");
                 }
                 break;
             case 'v':
-                if (row + shipLength + 1 > ROWS)
+                if (row + shipLength > ROWS)
                     throw new Error("Out of bounds vertical placement");
                 for (let i = row; i < row + shipLength; i++) {
                     if (this.matrix[i][column].ship) throw new Error("Collision");

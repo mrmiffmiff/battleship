@@ -38,7 +38,7 @@ describe('Gameboard class tests', () => {
 
         test('Invalid horizontal placement', () => {
             let testShip = new Ship('test', 5);
-            expect(() => { testBoard.placeShip(testShip, 3, 5, 'h') }).toThrow('Out of bounds horizontal placement');
+            expect(() => { testBoard.placeShip(testShip, 3, 6, 'h') }).toThrow('Out of bounds horizontal placement');
         });
 
         test('Valid horizontal placement', () => {
@@ -51,7 +51,7 @@ describe('Gameboard class tests', () => {
 
         test('Invalid vertical placement', () => {
             let testShip = new Ship('test', 5);
-            expect(() => { testBoard.placeShip(testShip, 5, 3, 'v') }).toThrow('Out of bounds vertical placement');
+            expect(() => { testBoard.placeShip(testShip, 6, 3, 'v') }).toThrow('Out of bounds vertical placement');
         });
 
         test('Valid vertical placement', () => {
