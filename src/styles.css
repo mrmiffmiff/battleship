@@ -16,11 +16,17 @@ body {
     gap: 1rem;
 }
 
+.board-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .fleet-status {
     list-style: none;
     padding: 0;
     text-align: left;
-    min-width: 8 rem;
+    min-width: 8rem;
 }
 
 .board {
