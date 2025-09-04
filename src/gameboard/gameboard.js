@@ -50,6 +50,17 @@ export default class Gameboard {
         if (!this.fleet.includes(ship)) this.fleet.push(ship);
     }
 
+    // This is a utility function for human player ship placement and will not have use after setup
+    removeShip(ship) {
+        for (let row of this.matrix) {
+            for (let tile of row) {
+                if (tile.ship === ship) tile.ship = null;
+            }
+        }
+        const index = this.fleet.indexOf(ship);
+        if (index !== -1) this.fleet.splice(index, 1);
+    }
+
     receiveAttack(row, column) {
         if (row < 0 || column < 0 || row >= ROWS || column >= COLUMNS) throw new Error("Out of bounds");
         if (this.areCoordinatesFiredUpon(row, column)) throw new Error("Duplicate attack");

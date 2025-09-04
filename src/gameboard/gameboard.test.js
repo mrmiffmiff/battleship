@@ -72,6 +72,30 @@ describe('Gameboard class tests', () => {
         });
     });
 
+    describe('Ship removal', () => {
+        let testBoard;
+        let testShip;
+
+        beforeEach(() => {
+            testBoard = new Gameboard();
+            testShip = new Ship('test', 3);
+            testBoard.placeShip(testShip, 2, 2, 'h');
+        });
+
+        test('Removed ship clears tiles', () => {
+            testBoard.removeShip(testShip);
+            for (let i = 2; i < 2 + testShip.length; i++) {
+                expect(testBoard.matrix[2][i]).toHaveProperty('ship', null);
+            }
+        });
+
+        test('Removed ship clears from fleet', () => {
+            expect(testBoard.fleet).toContain(testShip);
+            testBoard.removeShip(testShip);
+            expect(testBoard.fleet).not.toContain(testShip);
+        })
+    });
+
     describe('Attack reception', () => {
         let testBoard;
 
