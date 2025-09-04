@@ -52,9 +52,10 @@ export default class GameController {
         }
     }
 
-    start() {
+    async start() {
         if (!this.ui) throw new Error("UI controller not set in Game Controller"); // This shouldn't happen but just in case...
-        this.#placeRandomShips(this.playerOne.Gameboard);
+        //this.#placeRandomShips(this.playerOne.Gameboard);
+        await this.ui.showPlacementModal(this.playerOne.Gameboard);
         this.#placeRandomShips(this.playerTwo.Gameboard);
         this.ui.renderBoards(this.playerOne.Gameboard, this.playerTwo.Gameboard);
         this.ui.enableClicks();

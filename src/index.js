@@ -8,8 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const game = new GameController();
     const ui = new UIController(game);
     game.ui = ui;
-    ui.init();
     //this is for temporary interactions, will be taken away
     window.game = game;
     window.ui = ui;
+
+    //actually initiate
+    ui.init();
 });
