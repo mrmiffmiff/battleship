@@ -1,5 +1,6 @@
 import Ship from "../ships/ship";
 import Player from "../player/player";
+import { ROWS, COLUMNS } from "../gameboard/gameboard";
 
 export default class GameController {
     // While I'm keeping Game Control and UI control in separate classes and files, they are intrinsically connected to some extent
@@ -15,18 +16,46 @@ export default class GameController {
     }
 
     // For the time being, ships are placed in fixed positions; this will change after core functionality is confirmed
-    #placeFixedShips(board) {
-        board.placeShip(new Ship("Carrier", 5), 0, 0, "h");
-        board.placeShip(new Ship("Battleship", 4), 2, 0, "h");
-        board.placeShip(new Ship("Destroyer", 3), 4, 0, "h");
-        board.placeShip(new Ship("Submarine", 3), 6, 0, "h");
-        board.placeShip(new Ship("Patrol Boat", 2), 8, 0, "h");
+    // #placeFixedShips(board) {
+    //     board.placeShip(new Ship("Carrier", 5), 0, 0, "h");
+    //     board.placeShip(new Ship("Battleship", 4), 2, 0, "h");
+    //     board.placeShip(new Ship("Destroyer", 3), 4, 0, "h");
+    //     board.placeShip(new Ship("Submarine", 3), 6, 0, "h");
+    //     board.placeShip(new Ship("Patrol Boat", 2), 8, 0, "h");
+    // }
+
+    #placeRandomShips(board) {
+        const fleet = [
+            ["Carrier", 5],
+            ["Battleship", 4],
+            ["Destroyer", 3],
+            ["Submarine", 3],
+            ["Patrol Boat", 2]
+        ];
+        for (const mem of fleet) {
+            const ship = new Ship(mem[0], mem[1]);
+            let placed = false;
+            while (!placed) {
+                const dir = (Math.random() < 0.5) ? "h" : "v";
+                function getRandomInt(max) {
+                    return Math.floor(Math.random() * max);
+                }
+                const r = getRandomInt(ROWS);
+                const c = getRandomInt(COLUMNS);
+                try {
+                    board.placeShip(ship, r, c, dir);
+                    placed = true;
+                } catch {
+                    // just try again
+                }
+            }
+        }
     }
 
     start() {
         if (!this.ui) throw new Error("UI controller not set in Game Controller"); // This shouldn't happen but just in case...
-        this.#placeFixedShips(this.playerOne.Gameboard);
-        this.#placeFixedShips(this.playerTwo.Gameboard);
+        this.#placeRandomShips(this.playerOne.Gameboard);
+        this.#placeRandomShips(this.playerTwo.Gameboard);
         this.ui.renderBoards(this.playerOne.Gameboard, this.playerTwo.Gameboard);
         this.ui.enableClicks();
     }

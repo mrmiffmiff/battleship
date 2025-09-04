@@ -38,7 +38,15 @@ body {
 .gridCell {
     border: 1px solid #444;
     background-color: #e5e7eb;
+}
+
+#board2 .gridCell {
     cursor: pointer;
+}
+
+#board2 .disabled .gridCell {
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 .gridShip {
@@ -57,7 +65,22 @@ body {
     display: block;
 }
 
-.disabled .gridCell {
-    cursor: not-allowed;
-    pointer-events: none;
+.modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: left;
+}
+
+.hidden {
+    display: none;
 }
