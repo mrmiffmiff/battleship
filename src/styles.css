@@ -35,6 +35,10 @@ body {
     gap: 2px;
 }
 
+#placement-modal .board {
+    margin: 1rem auto 0;
+}
+
 .gridCell {
     border: 1px solid #444;
     background-color: #e5e7eb;
