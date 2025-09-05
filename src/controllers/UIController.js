@@ -19,6 +19,7 @@ export default class UIController {
         this.rightFleet = document.querySelector("#board2 .fleet-status");
         this.status = document.querySelector("#status");
         this.handleCellClick = this.#handleCellClick.bind(this); // Sort of silly but necessary
+        this.boardsContainer = document.querySelector(".boards")
 
         // Elements for placement modal
         this.placementModal = document.querySelector("#placement-modal");
@@ -181,7 +182,33 @@ export default class UIController {
         this.#renderFleet(rightBoard, this.rightFleet);
     }
 
-    // For now still assuming human vs computer, this is going to need to change some later
+    // Only relevant for human vs. human
+    showTurnSwitchPrompt(nextPlayerLabel) {
+        return new Promise((resolve) => {
+            // Hide boards while switching
+            this.boardsContainer.classList.add("hidden");
+
+            // Simple modal with a button to start the next turn
+            const modal = document.createElement("div");
+            modal.classList.add("modal");
+            const content = document.createElement("div");
+            content.classList.add("modal-content");
+            const button = document.createElement("button");
+            button.textContent = (nextPlayerLabel) ? `Next Player: ${nextPlayerLabel}` : "Next Player";
+            content.appendChild(button);
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+
+            const advanceTurn = () => {
+                button.removeEventListener("click", advanceTurn);
+                modal.remove();
+                this.boardsContainer.classList.remove("hidden");
+                resolve();
+            };
+
+            button.addEventListener("click", advanceTurn);
+        });
+    }
 
     enableClicks() {
         this.status.textContent = "Your turn";

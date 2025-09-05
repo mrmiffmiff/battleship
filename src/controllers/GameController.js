@@ -86,13 +86,24 @@ export default class GameController {
         if (!result.hit) this.current = opponent;
 
         const nextOpponent = (this.current === this.playerOne) ? this.playerTwo : this.playerOne;
-        if (!this.current.isComputer)
-            this.ui.renderBoards(this.current.Gameboard, nextOpponent.Gameboard);
-        else
+        this.ui.renderBoards(this.current.Gameboard, nextOpponent.Gameboard);
+        if (this.mode === "hvc" && this.current.isComputer) {
             this.ui.renderBoards(nextOpponent.Gameboard, this.current.Gameboard);
-        if (this.current === this.playerTwo) this.#queueComputerTurn();
-        else this.ui.enableClicks();
+            this.#queueComputerTurn();
+        }
+        else if (this.mode === "hvh" && !result.hit) {
+            this.ui.showTurnSwitchPrompt((this.current === this.playerOne) ? "Player 1" : "Player 2")
+                .then(() => {
+                    this.ui.renderBoards(this.current.Gameboard, nextOpponent.Gameboard);
+                    this.ui.enableClicks();
+                });
+        }
+        else {
+            this.ui.renderBoards(this.current.Gameboard, nextOpponent.Gameboard);
+            this.ui.enableClicks();
+        }
     }
+
 
     #queueComputerTurn() {
         this.ui.disableClicks();
@@ -101,4 +112,5 @@ export default class GameController {
             this.processMove(r, c);
         }, 3000);
     }
+
 }
