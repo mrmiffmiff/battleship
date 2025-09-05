@@ -65,7 +65,7 @@ export default class GameController {
 
         if (this.turnCount >= 17 && opponent.Gameboard.fleetGone) { // the turn count check lets us short circuit this a bit
             if (this.mode === "hvh") this.ui.renderBoards(this.current.Gameboard, opponent.Gameboard);
-            else this.ui.renderBoards(opponent.Gameboard, this.current.Gameboard);
+            else this.ui.renderBoards(this.playerOne.Gameboard, this.playerTwo.Gameboard);
             let winnerLabel;
             if (this.mode === "hvc")
                 winnerLabel = (this.current === this.playerOne) ? "human" : "computer";
