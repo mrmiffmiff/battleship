@@ -210,14 +210,14 @@ export default class UIController {
         });
     }
 
-    enableClicks() {
-        this.status.textContent = "Your turn";
+    enableClicks(label = "Your turn") {
+        this.status.textContent = label;
         this.rightGrid.addEventListener("click", this.handleCellClick);
         this.rightGrid.classList.remove("disabled");
     }
 
-    disableClicks() {
-        this.status.textContent = "Computer thinking...";
+    disableClicks(label = "Passing turn") {
+        this.status.textContent = label;
         this.rightGrid.removeEventListener("click", this.handleCellClick);
         this.rightGrid.classList.add("disabled");
     }
@@ -231,8 +231,11 @@ export default class UIController {
         this.game.processMove(r, c);
     }
 
-    showGameOver(playerWon) {
+    showGameOver(winnerLabel) {
         this.disableClicks();
-        this.status.textContent = (playerWon) ? "You win!" : "Computer wins!";
+        if (this.game.mode === "hvc")
+            this.status.textContent = (winnerLabel === "human") ? "You win!" : "Computer wins!";
+        else
+            this.status.textContent = `${winnerLabel} wins!`;
     }
 }

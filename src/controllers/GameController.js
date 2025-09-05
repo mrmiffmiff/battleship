@@ -16,15 +16,6 @@ export default class GameController {
         this.mode = mode;
     }
 
-    // For the time being, ships are placed in fixed positions; this will change after core functionality is confirmed
-    // #placeFixedShips(board) {
-    //     board.placeShip(new Ship("Carrier", 5), 0, 0, "h");
-    //     board.placeShip(new Ship("Battleship", 4), 2, 0, "h");
-    //     board.placeShip(new Ship("Destroyer", 3), 4, 0, "h");
-    //     board.placeShip(new Ship("Submarine", 3), 6, 0, "h");
-    //     board.placeShip(new Ship("Patrol Boat", 2), 8, 0, "h");
-    // }
-
     #placeRandomShips(board) {
         const fleet = [
             ["Carrier", 5],
@@ -63,7 +54,8 @@ export default class GameController {
             await this.ui.showPlacementModal(this.playerTwo.Gameboard);
         const opponent = (this.current === this.playerOne) ? this.playerTwo : this.playerOne;
         this.ui.renderBoards(this.current.Gameboard, opponent.Gameboard);
-        this.ui.enableClicks();
+        if (this.mode === "hvc") this.ui.enableClicks();
+        else this.ui.enableClicks("Player 1's turn");
     }
 
     processMove(row, col) {
@@ -72,16 +64,16 @@ export default class GameController {
         this.turnCount++;
 
         if (this.turnCount >= 17 && opponent.Gameboard.fleetGone) { // the turn count check lets us short circuit this a bit
-            this.ui.renderBoards(this.current.Gameboard, opponent.Gameboard)
-            this.ui.showGameOver(this.current === this.playerOne);
+            if (this.mode === "hvh") this.ui.renderBoards(this.current.Gameboard, opponent.Gameboard);
+            else this.ui.renderBoards(opponent.Gameboard, this.current.Gameboard);
+            let winnerLabel;
+            if (this.mode === "hvc")
+                winnerLabel = (this.current === this.playerOne) ? "human" : "computer";
+            else
+                winnerLabel = (this.current === this.playerOne) ? "Player 1" : "Player 2";
+            this.ui.showGameOver(winnerLabel);
             return;
         }
-
-        // if (result.hit) {
-        //     if (this.current === this.playerTwo) this.#queueComputerTurn();
-        //     else this.ui.enableClicks();
-        //     return;
-        // }
 
         if (!result.hit) this.current = opponent;
 
@@ -95,22 +87,27 @@ export default class GameController {
             this.ui.showTurnSwitchPrompt((this.current === this.playerOne) ? "Player 1" : "Player 2")
                 .then(() => {
                     this.ui.renderBoards(this.current.Gameboard, nextOpponent.Gameboard);
-                    this.ui.enableClicks();
+                    const label = (this.current === this.playerOne) ? "Player 1's turn" : "Player 2's turn";
+                    this.ui.enableClicks(label);
                 });
         }
         else {
             this.ui.renderBoards(this.current.Gameboard, nextOpponent.Gameboard);
-            this.ui.enableClicks();
+            if (this.mode === "hvc") this.ui.enableClicks();
+            else {
+                const label = (this.current === this.playerOne) ? "Player 1's turn" : "Player 2's turn";
+                this.ui.enableClicks(label);
+            }
         }
     }
 
 
     #queueComputerTurn() {
-        this.ui.disableClicks();
+        this.ui.disableClicks("Computer thinking...");
         setTimeout(() => {
             const [r, c] = this.playerTwo.getRandomAttack(this.playerOne.Gameboard);
             this.processMove(r, c);
-        }, 3000);
+        }, 0);
     }
 
 }
