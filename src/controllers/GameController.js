@@ -13,6 +13,7 @@ export default class GameController {
         this.playerTwo = new Player(mode === "hvc");
         this.current = this.playerOne;
         this.turnCount = 0;
+        this.mode = mode;
     }
 
     // For the time being, ships are placed in fixed positions; this will change after core functionality is confirmed
@@ -52,12 +53,14 @@ export default class GameController {
         }
     }
 
-    async start(mode) {
+    async start() {
         if (!this.ui) throw new Error("UI controller not set in Game Controller"); // This shouldn't happen but just in case...
-        this.mode = mode;
         //this.#placeRandomShips(this.playerOne.Gameboard);
         await this.ui.showPlacementModal(this.playerOne.Gameboard);
-        this.#placeRandomShips(this.playerTwo.Gameboard);
+        if (this.mode === "hvc")
+            this.#placeRandomShips(this.playerTwo.Gameboard);
+        else
+            await this.ui.showPlacementModal(this.playerTwo.Gameboard);
         this.ui.renderBoards(this.playerOne.Gameboard, this.playerTwo.Gameboard);
         this.ui.enableClicks();
     }
