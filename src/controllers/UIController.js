@@ -225,6 +225,7 @@ export default class UIController {
     #handleCellClick(clickEvent) {
         const cell = clickEvent.target;
         if (!cell.classList.contains("gridCell")) return; // gotta be sure what we clicked is actually a cell
+        if (cell.classList.contains("gridHit") || cell.classList.contains("gridMiss")) return; // no duplicates
         const r = cell.dataset.row;
         const c = cell.dataset.col;
         this.disableClicks();

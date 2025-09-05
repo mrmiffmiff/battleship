@@ -105,9 +105,9 @@ export default class GameController {
     #queueComputerTurn() {
         this.ui.disableClicks("Computer thinking...");
         setTimeout(() => {
-            const [r, c] = this.playerTwo.getRandomAttack(this.playerOne.Gameboard);
+            const [r, c] = this.playerTwo.getAttackCoordinates(this.playerOne.Gameboard);
             this.processMove(r, c);
-        }, 0);
+        }, 1000);
     }
 
 }

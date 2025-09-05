@@ -69,6 +69,11 @@ body {
     display: block;
 }
 
+.gridHit,
+.gridMiss {
+    pointer-events: none;
+}
+
 .modal {
     position: fixed;
     inset: 0;
