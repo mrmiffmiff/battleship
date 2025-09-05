@@ -61,7 +61,8 @@ export default class GameController {
             this.#placeRandomShips(this.playerTwo.Gameboard);
         else
             await this.ui.showPlacementModal(this.playerTwo.Gameboard);
-        this.ui.renderBoards(this.playerOne.Gameboard, this.playerTwo.Gameboard);
+        const opponent = (this.current === this.playerOne) ? this.playerTwo : this.playerOne;
+        this.ui.renderBoards(this.current.Gameboard, opponent.Gameboard);
         this.ui.enableClicks();
     }
 
@@ -69,20 +70,26 @@ export default class GameController {
         const opponent = (this.current === this.playerOne) ? this.playerTwo : this.playerOne;
         const result = this.current.attack(opponent.Gameboard, row, col);
         this.turnCount++;
-        this.ui.renderBoards(this.playerOne.Gameboard, this.playerTwo.Gameboard);
 
         if (this.turnCount >= 17 && opponent.Gameboard.fleetGone) { // the turn count check lets us short circuit this a bit
+            this.ui.renderBoards(this.current.Gameboard, opponent.Gameboard)
             this.ui.showGameOver(this.current === this.playerOne);
             return;
         }
 
-        if (result.hit) {
-            if (this.current === this.playerTwo) this.#queueComputerTurn();
-            else this.ui.enableClicks();
-            return;
-        }
+        // if (result.hit) {
+        //     if (this.current === this.playerTwo) this.#queueComputerTurn();
+        //     else this.ui.enableClicks();
+        //     return;
+        // }
 
-        this.current = opponent;
+        if (!result.hit) this.current = opponent;
+
+        const nextOpponent = (this.current === this.playerOne) ? this.playerTwo : this.playerOne;
+        if (!this.current.isComputer)
+            this.ui.renderBoards(this.current.Gameboard, nextOpponent.Gameboard);
+        else
+            this.ui.renderBoards(nextOpponent.Gameboard, this.current.Gameboard);
         if (this.current === this.playerTwo) this.#queueComputerTurn();
         else this.ui.enableClicks();
     }
