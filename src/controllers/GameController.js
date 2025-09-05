@@ -8,9 +8,9 @@ export default class GameController {
     // For the UI, it can be constructed with it, but for this, it needs to be added after the fact
     ui;
 
-    constructor() {
+    constructor(mode = "hvc") {
         this.playerOne = new Player(false);
-        this.playerTwo = new Player(true);
+        this.playerTwo = new Player(mode === "hvc");
         this.current = this.playerOne;
         this.turnCount = 0;
     }
@@ -52,8 +52,9 @@ export default class GameController {
         }
     }
 
-    async start() {
+    async start(mode) {
         if (!this.ui) throw new Error("UI controller not set in Game Controller"); // This shouldn't happen but just in case...
+        this.mode = mode;
         //this.#placeRandomShips(this.playerOne.Gameboard);
         await this.ui.showPlacementModal(this.playerOne.Gameboard);
         this.#placeRandomShips(this.playerTwo.Gameboard);

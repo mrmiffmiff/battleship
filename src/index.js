@@ -3,9 +3,11 @@ import "./styles.css";
 
 import GameController from "./controllers/GameController";
 import UIController from "./controllers/UIController";
+import showStartModal from "./startModal";
 
-document.addEventListener("DOMContentLoaded", () => {
-    const game = new GameController();
+async function startGame() {
+    const mode = await showStartModal();
+    const game = new GameController(mode);
     const ui = new UIController(game);
     game.ui = ui;
     //this is for temporary interactions, will be taken away
@@ -14,4 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //actually initiate
     ui.init();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    startGame();
 });
