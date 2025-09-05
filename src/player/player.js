@@ -104,7 +104,7 @@ export default class Player {
             }
             else {
                 const colConst = group.hits[0][1];
-                const rows = group.hits.map(h => h[1]);
+                const rows = group.hits.map(h => h[0]);
                 const min = Math.min(...rows) - 1;
                 const max = Math.max(...rows) + 1;
                 if (this.#inBounds(min, colConst) && !board.areCoordinatesFiredUpon(min, colConst))

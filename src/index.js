@@ -10,10 +10,6 @@ async function startGame() {
     const game = new GameController(mode);
     const ui = new UIController(game);
     game.ui = ui;
-    //this is for temporary interactions, will be taken away
-    window.game = game;
-    window.ui = ui;
-
     //actually initiate
     ui.init();
 }
